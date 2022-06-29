@@ -1,16 +1,36 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-let ballRadius = 15;
+// ball variables
+let ballRadius = 12;
 let x = canvas.width / 2;
 let y = canvas.height - 25;
 
 let dx = 2;
 let dy = -2;
 
+// paddle variables
 var paddleHeight = 15;
 var paddleWidth = 80;
 var paddleX = (canvas.width - paddleWidth) / 2;
+
+// brick variables
+var brickNRows = 4;
+var brickNColumns = 7;
+var brickWidth = 50;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickTopOffset = 25;
+var brickLeftOffset = 35;
+
+var bricks = [];
+for (var i=0; i<brickNColumns; i++) {
+    bricks[i] = [];
+    for (var j=0; j<brickNRows; j++) {
+        bricks[i][j] = {x: 0, y: 0};
+    }
+}
+
 
 var rightPressed = false;
 var leftPressed = false;
@@ -32,8 +52,25 @@ function drawPaddle() {
     ctx.closePath();
 }
 
+function drawBricks() {
+    for (var i=0; i<brickNColumns; i++){
+        for (var j=0; j<brickNRows; j++){
+            bricks[i][j].x = i*(brickWidth + brickPadding) + brickLeftOffset;
+            bricks[i][j].y = j*(brickHeight + brickPadding) + brickTopOffset;
+            ctx.beginPath();
+            ctx.rect(bricks[i][j].x, bricks[i][j].y, brickWidth, brickHeight);
+            ctx.fillStyle = "green";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
+
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    drawBricks();
     drawBall();
     drawPaddle();
 
